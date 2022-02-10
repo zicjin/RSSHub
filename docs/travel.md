@@ -10,6 +10,10 @@ pageClass: routes
 
 <Route author="LogicJake" example="/12306/zxdt" path="/12306/zxdt/:id?" :paramsDesc="['铁路局id，可在 URL 中找到，不填默认显示所有铁路局动态']"/>
 
+### 售票信息
+
+<Route author="Fatpandac" example="/12306/2022-02-19/重庆/永川东" path="/12306/:date/:from/:to/:type?" :paramsDesc="['时间', '始发站', '终点站', '售票类型，成人和学生可选，默认为成人']"/>
+
 ## All the Flight Deals
 
 ### 特价机票
@@ -35,7 +39,7 @@ ISO 3166-1 国家代码列表请参见 [维基百科 ISO_3166-1](https://zh.wiki
 
 伦敦希思罗 ✈ 北京首都国际 <https://rsshub.app/hopper/1/LHR/PEK>
 
-IATA 国际航空运输协会机场代码，参见[维基百科 国际航空运输协会机场代码](<https://zh.wikipedia.org/wiki/%E5%9B%BD%E9%99%85%E8%88%AA%E7%A9%BA%E8%BF%90%E8%BE%93%E5%8D%8F%E4%BC%9A%E6%9C%BA%E5%9C%BA%E4%BB%A3%E7%A0%81_(A)>)
+IATA 国际航空运输协会机场代码，参见[维基百科 国际航空运输协会机场代码](https://zh.wikipedia.org/wiki/%E5%9B%BD%E9%99%85%E8%88%AA%E7%A9%BA%E8%BF%90%E8%BE%93%E5%8D%8F%E4%BC%9A%E6%9C%BA%E5%9C%BA%E4%BB%A3%E7%A0%81_(A))
 
 </Route>
 
@@ -55,11 +59,11 @@ IATA 国际航空运输协会机场代码，参见[维基百科 国际航空运�
 
 ### 优惠信息
 
-<Route author="howel52" example="/flyertea/preferential" path="/flyertea/preferential" />
+<Route author="howel52" example="/flyert/preferential" path="/flyert/preferential" />
 
 ### 信用卡
 
-<Route author="nicolaszf" example="/flyertea/creditcard/zhongxin" path="/flyertea/creditcard/:bank" :paramsDesc="['信用卡板块各银行的拼音简称']">
+<Route author="nicolaszf" example="/flyert/creditcard/zhongxin" path="/flyert/creditcard/:bank" :paramsDesc="['信用卡板块各银行的拼音简称']">
 
 | 信用卡模块 | bank          |
 | ---------- | ------------- |
@@ -102,6 +106,14 @@ IATA 国际航空运输协会机场代码，参见[维基百科 国际航空运�
 
 <Route author="sinchang" example="/mafengwo/note/hot" path="/mafengwo/note/:type" :paramsDesc="['目前支持两种, `hot` 代表热门游记, `latest` 代表最新游记']"/>
 
+### 自由行
+
+<Route author="nczitzk" example="/mafengwo/ziyouxing/10186" path="/mafengwo/ziyouxing/:code" :paramsDesc="['目的地代码，可在该目的地页面的 URL 中找到']">
+
+目的地代码请参见 [这里](http://www.mafengwo.cn/mdd/)
+
+</Route>
+
 ## 中国美术馆
 
 ### 美术馆新闻
@@ -111,5 +123,15 @@ IATA 国际航空运输协会机场代码，参见[维基百科 国际航空运�
 | 通知公告     | 新闻 | 媒体联报 | 展览预告   | 焦点专题 |
 | ------------ | ---- | -------- | ---------- | -------- |
 | announcement | news | media    | exhibition | specials |
+
+</Route>
+
+## 走进日本
+
+<Route author="laampui" example="/nippon/Politics" path="/nippon/:category?" :paramsDesc="['默认政治，可选如下']">
+
+| 政治     | 经济    | 社会    | 展览预告 | 焦点专题           | 深度报道 | 话题         | 日本信息库 | 日本一蹩      | 人物访谈 | 编辑部通告    |
+| -------- | ------- | ------- | -------- | ------------------ | -------- | ------------ | ---------- | ------------- | -------- | ------------- |
+| Politics | Economy | Society | Culture  | Science,Technology | In-depth | japan-topics | japan-data | japan-glances | People   | Announcements |
 
 </Route>
