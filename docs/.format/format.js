@@ -3,6 +3,8 @@ const sgf = require('staged-git-files');
 const path = require('path');
 const sortByHeading = require('./sortByHeading');
 const chineseFormat = require('./chineseFormat');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 /**
  * Processors are objects contains two methods:
@@ -22,11 +24,24 @@ const loopSideBar = (children, type, lang, prefix) =>
             lang,
         }));
 const loopNav = (nav, lang) =>
-    nav.map((e) => ({
-        path: path.resolve(__dirname, '..', e.link.slice(1), 'README.md'),
-        type: file.NAV_TYPE,
-        lang,
-    }));
+    nav.flatMap((e) => {
+        if (e.items) {
+            return loopNav(e.items, lang);
+        }
+        if (e.link.endsWith('/')) {
+            return {
+                path: path.resolve(__dirname, '..', e.link.slice(1), 'README.md'),
+                type: file.NAV_TYPE,
+                lang,
+            };
+        } else {
+            return {
+                path: path.resolve(__dirname, '..', `${e.link.replace(/^\//, '')}.md`),
+                type: file.NAV_TYPE,
+                lang,
+            };
+        }
+    });
 const loopType = (sidebar, lang, prefix) => loopSideBar(sidebar[0].children, file.GUIDE_TYPE, lang, prefix).concat(loopSideBar(sidebar[1].children, file.ROUTE_TYPE, lang, prefix));
 
 /**
@@ -97,19 +112,15 @@ const buildStagedList = async () => {
     // console.log(fileList);
     // return
 
+    const stagedFiles = await sgf();
     for (const processor of processors) {
-        // We don't want to mix up processor
-        /* eslint-disable no-await-in-loop */
-        await Promise.all(
-            processor.rules(fileList).map(async (e) => {
-                let formatted = await file.readFile(e.path);
-                formatted = await processor.handler(formatted);
-                return file.writeFile(e.path, formatted);
-            })
-        ).catch((err) => {
-            // eslint-disable-next-line no-console
-            console.log(err);
-            process.exit(1);
-        });
+        for (const e of processor.rules(fileList)) {
+            let formatted = await file.readFile(e.path);
+            formatted = await processor.handler(formatted);
+            await file.writeFile(e.path, formatted);
+            if (stagedFiles.find((x) => e.path.indexOf(x.filename) !== -1)) {
+                await exec(`git add ${e.path}`);
+            }
+        }
     }
 })();
